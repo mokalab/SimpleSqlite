@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Use this class to manage the opening and closing of your SQLiteDatabase. It helps
  * with concurrency issues. Note: You must call {@link #initialize(android.database.sqlite.SQLiteOpenHelper)}
  * on your {@link android.app.Application#onCreate()}.
+ *
  * <br><br>
  * Created by Pirdad S. on 2014-05-26.
  */
@@ -24,10 +25,12 @@ public class DatabaseController {
     private static DatabaseController mController;
 
     /**
-     * Creates new instance of DatabaseController and initializes it.<br><br>
-     * Created by Pirdad S. on 2014-05-26.
+     * Creates new instance of DatabaseController and initializes it.
      *
      * @param dbHelper required SQLiteOpenHelper
+     *
+     * <br><br>
+     * Created by Pirdad S.
      */
     public static synchronized void initialize(SQLiteOpenHelper dbHelper) {
 
@@ -39,7 +42,9 @@ public class DatabaseController {
     /**
      * Get existing instance of DatabaseController.<br>
      * If {@link #initialize(android.database.sqlite.SQLiteOpenHelper)} was never called,
-     * then this method will throw IllegalStateException.<br><br>
+     * then this method will throw IllegalStateException.
+     *
+     * <br><br>
      * Created by Pirdad S. on 2014-05-26.
      *
      * @throws IllegalStateException
@@ -54,7 +59,9 @@ public class DatabaseController {
     }
 
     /**
-     * Initializes the DatabaseController.<br><br>
+     * Initializes the DatabaseController.
+     *
+     * <br><br>
      * Created by Pirdad S. on 2014-05-26.
      *
      * @param dbHelper required SQLiteOpenHelper
@@ -81,7 +88,9 @@ public class DatabaseController {
      * SQLiteDatabase db = dbCtrlr.openDatabase();<br>
      * // Perform your CRUD on the db<br>
      * dbCtrlr.closeDatabase();<br>
-     * </code><br>
+     * </code>
+     *
+     * <br><br>
      * Created by Pirdad S. on 2014-05-26.
      */
     public synchronized SQLiteDatabase openDatabase() {
@@ -104,7 +113,9 @@ public class DatabaseController {
      * SQLiteDatabase db = dbCtrlr.openDatabase();<br>
      * // Perform your CRUD on the db<br>
      * dbCtrlr.closeDatabase();<br>
-     * </code><br>
+     * </code>
+     *
+     * <br><br>
      * Created by Pirdad S. on 2014-05-26.
      */
     public synchronized void closeDatabase() {

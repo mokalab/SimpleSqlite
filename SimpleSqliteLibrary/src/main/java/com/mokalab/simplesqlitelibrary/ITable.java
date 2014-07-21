@@ -11,13 +11,17 @@ package com.mokalab.simplesqlitelibrary;
  *     {@link TablesHelper#DEFAULT_ID_COLUMN_NAME}<br>
  *     {@link TablesHelper#DEFAULT_ID_COLUMN_TYPE}<br>
  *     {@link TablesHelper#DEFAULT_ID_COLUMN_OPTIONS}<br>
+ *
  * <br><br>
- * Created by Pirdad on 2014-06-09.
+ * Created by Pirdad S. on 2014-06-09.
  */
 public interface ITable {
 
     /**
      * Name of the Table
+     *
+     * <br><br>
+     * Created by Pirdad S.
      */
     public String getTableName();
 
@@ -25,6 +29,9 @@ public interface ITable {
      * Name of the Columns<br>
      * Ex. Column name in <b>'title text not null'</b><br>
      * is <b>'title'</b>
+     *
+     * <br><br>
+     * Created by Pirdad S.
      */
     public String[] getColumnNames();
 
@@ -32,6 +39,9 @@ public interface ITable {
      * Type of the Columns<br>
      * Ex. Column type in <b>'title text not null'</b><br>
      * is <b>'text'</b>
+     *
+     * <br><br>
+     * Created by Pirdad S.
      */
     public String[] getColumnTypes();
 
@@ -39,6 +49,9 @@ public interface ITable {
      * [Optional] Options for the Columns<br>
      * Ex. Column options in <b>'title text not null'</b><br>
      * is <b>'not null'</b>
+     *
+     * <br><br>
+     * Created by Pirdad S.
      */
     public String[] getColumnOptions();
 }

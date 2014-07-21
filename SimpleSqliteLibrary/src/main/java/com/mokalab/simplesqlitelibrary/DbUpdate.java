@@ -6,7 +6,8 @@ import android.text.TextUtils;
 
 /**
  * TODO: JAVADOC
- * Created by work on 2014-06-04.
+ * <br><br>
+ * Created by Pirdad S. on 2014-06-04.
  */
 public class DbUpdate extends DatabaseTaskExecutor<Integer, DbUpdate.OnDbUpdateTaskListener> {
 
@@ -20,6 +21,18 @@ public class DbUpdate extends DatabaseTaskExecutor<Integer, DbUpdate.OnDbUpdateT
     private ContentValues mValues;
     private OnDbUpdateDelegate mUpdateDelegate;
 
+    /**
+     * TODO: JAVADOC
+     *
+     * <br><br>
+     * Created by Pirdad S.
+     *
+     * @param taskId
+     * @param tableName
+     * @param values
+     * @param updateDelegate
+     * @param listener
+     */
     public DbUpdate(int taskId, String tableName, ContentValues values, OnDbUpdateDelegate updateDelegate, OnDbUpdateTaskListener
             listener) {
 
@@ -67,6 +80,9 @@ public class DbUpdate extends DatabaseTaskExecutor<Integer, DbUpdate.OnDbUpdateT
 
     /**
      * TODO: JAVADOC
+     *
+     * <br><br>
+     * Created by Pirdad S.
      */
     public static interface OnDbUpdateTaskListener extends DatabaseTaskExecutor.OnDbTaskExecutedListener {
 
@@ -75,6 +91,9 @@ public class DbUpdate extends DatabaseTaskExecutor<Integer, DbUpdate.OnDbUpdateT
 
     /**
      * TODO: JAVADOC
+     *
+     * <br><br>
+     * Created by Pirdad S.
      */
     public static interface OnDbUpdateDelegate {
 

@@ -7,7 +7,9 @@ import java.util.ArrayList;
 
 /**
  * * TODO: JAVADOC
- * Created by work on 2014-06-04.
+ *
+ * <br><br>
+ * Created by Pirdad S. on 2014-06-04.
  */
 public class DbRemove extends DatabaseTaskExecutor<ArrayList<Long>, DbRemove.OnDbRemoveTaskListenerMultiple> {
 
@@ -17,6 +19,17 @@ public class DbRemove extends DatabaseTaskExecutor<ArrayList<Long>, DbRemove.OnD
     private long[] mIdsToRemove;
     private String mTableName;
 
+    /**
+     * TODO: JAVADOC
+     *
+     * <br><br>
+     * Created by Pirdad S.
+     *
+     * @param taskId
+     * @param tableName
+     * @param idsToRemove
+     * @param listener
+     */
     public DbRemove(int taskId, String tableName, long[] idsToRemove, OnDbRemoveTaskListenerMultiple listener) {
 
         super(openDb(), taskId, listener);
@@ -68,6 +81,9 @@ public class DbRemove extends DatabaseTaskExecutor<ArrayList<Long>, DbRemove.OnD
 
     /**
      * TODO: JAVADOC
+     *
+     * <br><br>
+     * Created by Pirdad S.
      */
     public interface OnDbRemoveTaskListenerMultiple extends DatabaseTaskExecutor.OnDbTaskExecutedListener {
 
@@ -76,6 +92,9 @@ public class DbRemove extends DatabaseTaskExecutor<ArrayList<Long>, DbRemove.OnD
 
     /**
      * TODO: JAVADOC
+     *
+     * <br><br>
+     * Created by Pirdad S.
      */
     public interface OnDbRemoveTaskListenerSingle extends DatabaseTaskExecutor.OnDbTaskExecutedListener {
 

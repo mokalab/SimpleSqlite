@@ -4,8 +4,10 @@ import android.text.TextUtils;
 
 /**
  * This is a Helper class for Database Tables only. It contains helper functions
- * for only relating to tables. <b>DO NOT ADD UNRELATED FUNCTIONS HERE.</b><br><br>
- * Created by Pirdad on 2014-05-22.
+ * for only relating to tables. <b>DO NOT ADD UNRELATED FUNCTIONS HERE.</b>
+ *
+ * <br><br>
+ * Created by Pirdad S. on 2014-05-22.
  */
 public class TablesHelper {
 
@@ -14,8 +16,10 @@ public class TablesHelper {
     public static String DEFAULT_ID_COLUMN_OPTIONS = "primary key autoincrement";
 
     /**
-     * Call this to get the DROP Statement for all your tables<br><br>
-     * Created by Pirdad on 2014-05-22.
+     * Call this to get the DROP Statement for all your tables
+     *
+     * <br><br>
+     * Created by Pirdad S.
      * @return DROP statement or if (tables == null) => returns null
      */
     public static String onDropTables(ITable[] tables) {
@@ -33,8 +37,10 @@ public class TablesHelper {
     }
 
     /**
-     * Call this to get the CREATE Statement for all your tables.<br><br>
-     * Created by Pirdad on 2014-05-22.
+     * Call this to get the CREATE Statement for all your tables.
+     *
+     * <br><br>
+     * Created by Pirdad S.
      * @return CREATE statement
      */
     public static String onCreateTables(ITable[] tables) {

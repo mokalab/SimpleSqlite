@@ -6,7 +6,9 @@ import android.text.TextUtils;
 
 /**
  * TODO: JAVADOC
- * Created by work on 2014-06-04.
+ *
+ * <br><br>
+ * Created by Pirdad S. on 2014-06-04.
  */
 public class DbInsert extends DatabaseTaskExecutor<Long, DbInsert.OnDbInsertTaskListener> {
 
@@ -16,6 +18,17 @@ public class DbInsert extends DatabaseTaskExecutor<Long, DbInsert.OnDbInsertTask
     private String mTableName;
     private ContentValues mValues;
 
+    /**
+     * TODO: JAVADOC
+     *
+     * <br><br>
+     * Created by Pirdad S.
+     *
+     * @param taskId
+     * @param tableName
+     * @param values
+     * @param listener
+     */
     public DbInsert(int taskId, String tableName, ContentValues values, OnDbInsertTaskListener listener) {
 
         super(openDb(), taskId, listener);
@@ -57,6 +70,9 @@ public class DbInsert extends DatabaseTaskExecutor<Long, DbInsert.OnDbInsertTask
 
     /**
      * TODO: JAVADOC
+     *
+     * <br><br>
+     * Created by Pirdad S.
      */
     public static interface OnDbInsertTaskListener extends DatabaseTaskExecutor.OnDbTaskExecutedListener {
 

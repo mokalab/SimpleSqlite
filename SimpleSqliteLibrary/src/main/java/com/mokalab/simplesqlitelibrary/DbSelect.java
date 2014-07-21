@@ -10,8 +10,9 @@ import java.util.ArrayList;
  * Use this class to make select statements on certain table.
  * It will return to you an ArrayList of {@link IDbModel} by going
  * through your callback methods of {@link DbSelect.OnDbSelectDelegate}.
+ *
  * <br><br>
- * Created by work on 2014-06-04.
+ * Created by Pirdad S. on 2014-06-04.
  */
 public class DbSelect<T extends IDbModel> extends DatabaseTaskExecutor<ArrayList<T>, DbSelect.OnDbSelectTaskListenerMultiple> {
 
@@ -21,6 +22,17 @@ public class DbSelect<T extends IDbModel> extends DatabaseTaskExecutor<ArrayList
     protected String mTableName;
     protected OnDbSelectDelegate<T> mSelectDelegate;
 
+    /**
+     * TODO: JAVA DOC
+     *
+     * <br><br>
+     * Created by Pirdad S.
+     *
+     * @param taskId
+     * @param tableName
+     * @param selectDelegate
+     * @param listener
+     */
     public DbSelect(int taskId, String tableName, OnDbSelectDelegate<T> selectDelegate, OnDbSelectTaskListenerMultiple<T> listener) {
 
         super(openDb(), taskId, listener);
@@ -78,6 +90,10 @@ public class DbSelect<T extends IDbModel> extends DatabaseTaskExecutor<ArrayList
 
     /**
      * TODO: JAVADOC
+     *
+     * <br><br>
+     * Created by Pirdad S.
+     *
      * @param <K>
      */
     public static interface OnDbSelectTaskListenerMultiple<K extends IDbModel> extends DatabaseTaskExecutor.OnDbTaskExecutedListener {
@@ -87,6 +103,10 @@ public class DbSelect<T extends IDbModel> extends DatabaseTaskExecutor<ArrayList
 
     /**
      * TODO: JAVADOC
+     *
+     * <br><br>
+     * Created by Pirdad S.
+     *
      * @param <K>
      */
     public static interface OnDbSelectTaskListenerSingle<K extends IDbModel> extends DatabaseTaskExecutor.OnDbTaskExecutedListener {
@@ -96,6 +116,10 @@ public class DbSelect<T extends IDbModel> extends DatabaseTaskExecutor<ArrayList
 
     /**
      * TODO: JAVADOC
+     *
+     * <br><br>
+     * Created by Pirdad S.
+     *
      * @param <K>
      */
     public static interface OnDbSelectDelegate<K extends IDbModel> {

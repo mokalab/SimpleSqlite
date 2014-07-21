@@ -5,7 +5,9 @@ import android.os.AsyncTask;
 
 /**
  * TODO: JAVADOC
- * Created by work on 2014-05-26.
+ *
+ * <br><br>
+ * Created by Pirdad S. on 2014-05-26.
  */
 public abstract class DatabaseTaskExecutor<T, P extends DatabaseTaskExecutor.OnDbTaskExecutedListener> extends AsyncTask<Void, Void, T> {
 
@@ -16,6 +18,16 @@ public abstract class DatabaseTaskExecutor<T, P extends DatabaseTaskExecutor.OnD
     private SQLiteDatabase mDb;
     private int mTaskId;
 
+    /**
+     * TODO: JAVADOC
+     *
+     * <br><br>
+     * Created by Pirdad S.
+     *
+     * @param db
+     * @param taskId
+     * @param listener
+     */
     public DatabaseTaskExecutor(SQLiteDatabase db, int taskId, P listener) {
 
         mListener = listener;
@@ -38,25 +50,47 @@ public abstract class DatabaseTaskExecutor<T, P extends DatabaseTaskExecutor.OnD
     /**
      * Called from {@link #doInBackground(Void...)}. It allows the chance to
      * execute some specific task depending on which Class it is being implemented in.
+     *
+     * <br><br>
+     * Created by Pirdad S.
      */
     protected abstract T onExecuteTask(SQLiteDatabase db);
 
+    /**
+     * Called from {@link #onPostExecute(Object)} after the task has been completed in a
+     * background thread.
+     *
+     * <br><br>
+     * Created by Pirdad S.
+     */
     protected abstract void onTaskExecuted(T result);
 
     /**
-     * Opens the Database and also takes care of initializing DatabaseController if
-     * it was never initialized before.
+     * Opens the Database. If {@link com.mokalab.simplesqlitelibrary.DatabaseController} was never initialized then it will
+     * return null for the {@link android.database.sqlite.SQLiteDatabase}.
+     *
+     * <br><br>
+     * Created by Pirdad S.
      */
     protected synchronized static SQLiteDatabase openDb() {
 
-        DatabaseController dbCtrl = DatabaseController.getInstance();
+        DatabaseController dbCtrl = null;
+        try {
+            dbCtrl = DatabaseController.getInstance();
+        } catch (IllegalStateException e) {
+            return null;
+        }
+
         return dbCtrl.openDatabase();
     }
 
     /**
      * Closes the Database if the DatabaseController allows it.<br><br>
      * Note: After performing your CRUD, you must call this instead of
-     * {@link android.database.sqlite.SQLiteDatabase#close()} to close the db.<br><br>
+     * {@link android.database.sqlite.SQLiteDatabase#close()} to close the db.
+     *
+     * <br><br>
+     * Created by Pirdad S.
      */
     protected synchronized static void closeDb() {
 
@@ -72,6 +106,9 @@ public abstract class DatabaseTaskExecutor<T, P extends DatabaseTaskExecutor.OnD
 
     /**
      * TODO: JAVADOC
+     *
+     * <br><br>
+     * Created by Pirdad S.
      */
     public int getTaskId() {
         return mTaskId;
@@ -79,6 +116,9 @@ public abstract class DatabaseTaskExecutor<T, P extends DatabaseTaskExecutor.OnD
 
     /**
      * TODO: JAVADOC
+     *
+     * <br><br>
+     * Created by Pirdad S.
      */
     public P getListener() {
         return mListener;
@@ -86,6 +126,9 @@ public abstract class DatabaseTaskExecutor<T, P extends DatabaseTaskExecutor.OnD
 
     /**
      * TODO: JAVADOC
+     *
+     * <br><br>
+     * Created by Pirdad S.
      */
     protected static interface OnDbTaskExecutedListener {
 
