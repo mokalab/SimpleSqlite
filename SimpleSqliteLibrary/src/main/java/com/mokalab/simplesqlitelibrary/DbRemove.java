@@ -4,10 +4,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * DbRemove provides row removal operation. It essentially wraps {@link android.database.sqlite.SQLiteDatabase#delete(String,
- * String, String[])} and makes it asynchronous. <br><br>
+ * String, String[])} and makes it asynchronous. <br>
+ * <br>
  *
  * Defines two callback listeners. {@link com.mokalab.simplesqlitelibrary.DbRemove.OnDbRemoveTaskListenerMultiple} which is the
  * default since the remove operations can be done on multiple rows. {@link
@@ -18,7 +20,7 @@ import java.util.ArrayList;
  * <br><br>
  * Created by Pirdad S. on 2014-06-04.
  */
-public class DbRemove extends DatabaseTaskExecutor<ArrayList<Long>, DbRemove.OnDbRemoveTaskListenerMultiple> {
+public class DbRemove extends DatabaseTaskExecutor<List<Long>, DbRemove.OnDbRemoveTaskListenerMultiple> {
 
     private static final String ATLEAST_ONE_ID_NEEDED = "No row id found. Please pass at least one row id in order to remove " +
             "it from the table.";
@@ -45,7 +47,7 @@ public class DbRemove extends DatabaseTaskExecutor<ArrayList<Long>, DbRemove.OnD
     }
 
     @Override
-    protected ArrayList<Long> onExecuteTask(SQLiteDatabase db) {
+    protected List<Long> onExecuteTask(SQLiteDatabase db) {
 
         if (TextUtils.isEmpty(mTableName)) {
             throw new IllegalArgumentException(TABLE_NAME_CANT_BE_NULL);
@@ -70,7 +72,7 @@ public class DbRemove extends DatabaseTaskExecutor<ArrayList<Long>, DbRemove.OnD
     }
 
     @Override
-    protected void onTaskExecuted(ArrayList<Long> result) {
+    protected void onTaskExecuted(List<Long> result) {
 
         closeDb();
         if (result == null || result.size() <= 0) {
@@ -101,7 +103,7 @@ public class DbRemove extends DatabaseTaskExecutor<ArrayList<Long>, DbRemove.OnD
          * @param taskId the operation id
          * @param idsRemoved ids that were removed
          */
-        public abstract void onDbRemoveCompleted(int taskId, ArrayList<Long> idsRemoved);
+        public abstract void onDbRemoveCompleted(int taskId, List<Long> idsRemoved);
     }
 
     /**

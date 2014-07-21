@@ -4,17 +4,29 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Use this class to make select statements on certain table.
- * It will return to you an ArrayList of {@link IDbModel} by going
- * through your callback methods of {@link DbSelect.OnDbSelectDelegate}.
+ * DbSelect provides the Sql Select operation on a table. It wraps
+ * {@link android.database.sqlite.SQLiteDatabase#query(String, String[], String, String[], String, String,
+ * String)} and makes it asynchronous.<br>
+ * <br>
+ * Use this class to make select statements and it will return to you an ArrayList of {@link IDbModel}.
+ * {@link com.mokalab.simplesqlitelibrary.DbSelect.OnDbSelectDelegate} is required to be implemented in order to provide
+ * operation specific parameters. It also calls back
+ * {@link com.mokalab.simplesqlitelibrary.DbSelect.OnDbSelectDelegate#onSelectParse(android.database.Cursor)} which you can use
+ * to parse the Cursor to your model.<br>
+ * <br>
+ * Defines two callback listeners. {@link com.mokalab.simplesqlitelibrary.DbSelect.OnDbSelectTaskListenerMultiple} which is the
+ * default since the select operations can be done on multiple rows. {@link
+ * com.mokalab.simplesqlitelibrary.DbSelect.OnDbSelectTaskListenerSingle} is the other callback listener,
+ * however it's not used internally by this class. It's only a
+ * definition and you must define the usage logic yourself.
  *
  * <br><br>
  * Created by Pirdad S. on 2014-06-04.
  */
-public class DbSelect<T extends IDbModel> extends DatabaseTaskExecutor<ArrayList<T>, DbSelect.OnDbSelectTaskListenerMultiple> {
+public class DbSelect<T extends IDbModel> extends DatabaseTaskExecutor<List<T>, DbSelect.OnDbSelectTaskListenerMultiple> {
 
     private static final String SELECT_DELEGATE_MUST_NOT_BE_NULL = "OnDbSelectDelegate is null. Please pass a proper reference" +
             " to OnDbSelectDelegate.";
@@ -23,7 +35,7 @@ public class DbSelect<T extends IDbModel> extends DatabaseTaskExecutor<ArrayList
     protected OnDbSelectDelegate<T> mSelectDelegate;
 
     /**
-     * TODO: JAVA DOC
+     * Constructs a new select operation.
      *
      * <br><br>
      * Created by Pirdad S.
@@ -41,7 +53,7 @@ public class DbSelect<T extends IDbModel> extends DatabaseTaskExecutor<ArrayList
     }
 
     @Override
-    protected ArrayList<T> onExecuteTask(SQLiteDatabase db) {
+    protected List<T> onExecuteTask(SQLiteDatabase db) {
 
         if (mSelectDelegate == null) {
             throw new IllegalArgumentException(SELECT_DELEGATE_MUST_NOT_BE_NULL);
@@ -68,7 +80,7 @@ public class DbSelect<T extends IDbModel> extends DatabaseTaskExecutor<ArrayList
     }
 
     @Override
-    protected void onTaskExecuted(ArrayList<T> result) {
+    protected void onTaskExecuted(List<T> result) {
 
         closeDb();
         if (result == null) {
@@ -89,33 +101,50 @@ public class DbSelect<T extends IDbModel> extends DatabaseTaskExecutor<ArrayList
     }
 
     /**
-     * TODO: JAVADOC
+     * Used by {@link com.mokalab.simplesqlitelibrary.DbSelect} to callback to the caller of a success or failure operation.
+     * The callback will return a List of parsed {@link com.mokalab.simplesqlitelibrary.IDbModel}.
+     * Implement this interface to get the callback.
      *
      * <br><br>
      * Created by Pirdad S.
      *
-     * @param <K>
+     * @param <K> Is the type for the parsed List {@link com.mokalab.simplesqlitelibrary.IDbModel}.
      */
     public static interface OnDbSelectTaskListenerMultiple<K extends IDbModel> extends DatabaseTaskExecutor.OnDbTaskExecutedListener {
 
-        public abstract void onDbSelectCompleted(int taskId, ArrayList<K> result);
+        /**
+         * Called when a select operation is successful.
+         * @param taskId the operation id
+         * @param result is the parse List of your Model
+         */
+        public abstract void onDbSelectCompleted(int taskId, List<K> result);
     }
 
     /**
-     * TODO: JAVADOC
+     * Implement this interface to get a call back with the Parsed Model. It is not used internally by
+     * {@link com.mokalab.simplesqlitelibrary.DbSelect} so you must implement the logic for calling
+     * {@link #onDbSelectCompleted(int, IDbModel)} yourself.
      *
      * <br><br>
      * Created by Pirdad S.
      *
-     * @param <K>
+     * @param <K> Is the type for the parsed List {@link com.mokalab.simplesqlitelibrary.IDbModel}.
      */
     public static interface OnDbSelectTaskListenerSingle<K extends IDbModel> extends DatabaseTaskExecutor.OnDbTaskExecutedListener {
 
+        /**
+         * Called when a select operation is successful for a single row.
+         * @param taskId the operation id
+         * @param result is the parsed Model
+         */
         public abstract void onDbSelectCompleted(int taskId, K result);
     }
 
     /**
-     * TODO: JAVADOC
+     * Since the parameters for
+     * { @link android.database.sqlite.SQLiteDatabase#query(String, String[], String, String[], String, String, String) } are all
+     * specific, this delegate will allow the child class of { @link DbSelect} to define all the parameters. Plus it will also
+     * call {@link #onSelectParse(android.database.Cursor)} that gives you a chance to parse the Models from the cursor.
      *
      * <br><br>
      * Created by Pirdad S.
@@ -130,6 +159,6 @@ public class DbSelect<T extends IDbModel> extends DatabaseTaskExecutor<ArrayList
         public abstract String onGetGroupByStatement();
         public abstract String onGetHavingStatement();
         public abstract String onGetOrderByStatement();
-        public abstract ArrayList<K> onSelectParse(Cursor cursor);
+        public abstract List<K> onSelectParse(Cursor cursor);
     }
 }
