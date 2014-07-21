@@ -6,7 +6,14 @@ import android.text.TextUtils;
 import java.util.ArrayList;
 
 /**
- * * TODO: JAVADOC
+ * DbRemove provides row removal operation. It essentially wraps {@link android.database.sqlite.SQLiteDatabase#delete(String,
+ * String, String[])} and makes it asynchronous. <br><br>
+ *
+ * Defines two callback listeners. {@link com.mokalab.simplesqlitelibrary.DbRemove.OnDbRemoveTaskListenerMultiple} which is the
+ * default since the remove operations can be done on multiple rows. {@link
+ * com.mokalab.simplesqlitelibrary.DbRemove.OnDbRemoveTaskListenerSingle} is the other callback listener,
+ * however it's not used internally by this class. It's only a
+ * definition and you must define the usage logic yourself.
  *
  * <br><br>
  * Created by Pirdad S. on 2014-06-04.
@@ -20,15 +27,15 @@ public class DbRemove extends DatabaseTaskExecutor<ArrayList<Long>, DbRemove.OnD
     private String mTableName;
 
     /**
-     * TODO: JAVADOC
+     * Constructs a new remove operation.
      *
      * <br><br>
      * Created by Pirdad S.
      *
-     * @param taskId
-     * @param tableName
-     * @param idsToRemove
-     * @param listener
+     * @param taskId operation id
+     * @param tableName name of the table
+     * @param idsToRemove ids of the rows to remove (must refer to '_id' column)
+     * @param listener callback listener
      */
     public DbRemove(int taskId, String tableName, long[] idsToRemove, OnDbRemoveTaskListenerMultiple listener) {
 
@@ -80,24 +87,38 @@ public class DbRemove extends DatabaseTaskExecutor<ArrayList<Long>, DbRemove.OnD
     }
 
     /**
-     * TODO: JAVADOC
+     * Used by {@link com.mokalab.simplesqlitelibrary.DbRemove} to callback to the caller of a success or failure operation.
+     * The callback will return a List of ids that was removed from the database.
+     * Implement this interface to get the callback.
      *
      * <br><br>
      * Created by Pirdad S.
      */
     public interface OnDbRemoveTaskListenerMultiple extends DatabaseTaskExecutor.OnDbTaskExecutedListener {
 
+        /**
+         * Called when a remove operation is successful for a list of ids.
+         * @param taskId the operation id
+         * @param idsRemoved ids that were removed
+         */
         public abstract void onDbRemoveCompleted(int taskId, ArrayList<Long> idsRemoved);
     }
 
     /**
-     * TODO: JAVADOC
+     * Implement this interface to get a call back of the id that was removed. It is not used internally by
+     * {@link com.mokalab.simplesqlitelibrary.DbRemove} so you must implement the logic for calling
+     * {@link #onDbRemoveCompleted(int, long)} yourself.
      *
      * <br><br>
      * Created by Pirdad S.
      */
     public interface OnDbRemoveTaskListenerSingle extends DatabaseTaskExecutor.OnDbTaskExecutedListener {
 
+        /**
+         * Called when a remove operation is successful for a single row.
+         * @param taskId the operation id
+         * @param idRemoved id that was removed
+         */
         public abstract void onDbRemoveCompleted(int taskId, long idRemoved);
     }
 }
