@@ -9,6 +9,9 @@ import android.os.AsyncTask;
  */
 public abstract class DatabaseTaskExecutor<T, P extends DatabaseTaskExecutor.OnDbTaskExecutedListener> extends AsyncTask<Void, Void, T> {
 
+    protected static final String TABLE_NAME_CANT_BE_NULL = "The passed Table Name is null or empty. Please pass a proper Table" +
+            " Name.";
+
     private P mListener;
     private SQLiteDatabase mDb;
     private int mTaskId;
@@ -88,17 +91,4 @@ public abstract class DatabaseTaskExecutor<T, P extends DatabaseTaskExecutor.OnD
 
         public abstract void onDbTaskFailed(int taskId);
     }
-
-
-    /**
-     * TODO: JAVADOC and REMOVE TO IT'S RESPECTIVE CLASS
-     */
-    public interface OnDbUpdateTaskListener extends OnDbTaskExecutedListener {
-
-        public abstract void onDbInsertCompleted();
-    }
-
-
-
-
 }

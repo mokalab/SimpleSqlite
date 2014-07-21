@@ -24,10 +24,10 @@ public class TestAdapter extends BaseAdapter {
         super();
         mLayoutInflater = LayoutInflater.from(context);
         mData = new ArrayList<AdapterItem>();
-        addItemAdd();
+        addItemAddition();
     }
 
-    private void addItemAdd() {
+    private void addItemAddition() {
 
         if (mData != null) {
 
@@ -80,7 +80,7 @@ public class TestAdapter extends BaseAdapter {
             mData.add(item);
         }
 
-        addItemAdd();
+        addItemAddition();
     }
 
     @Override
@@ -122,6 +122,8 @@ public class TestAdapter extends BaseAdapter {
             lblName.setText(model.getName());
             lblAge.setText(String.valueOf(model.getAge()));
 
+            btnDelete.setFocusable(false);
+            btnDelete.setFocusableInTouchMode(false);
             btnDelete.setOnClickListener(new View.OnClickListener() {
 
                 @Override

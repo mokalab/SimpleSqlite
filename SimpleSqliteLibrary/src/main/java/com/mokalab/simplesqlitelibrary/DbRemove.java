@@ -1,6 +1,7 @@
 package com.mokalab.simplesqlitelibrary;
 
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 
 import java.util.ArrayList;
 
@@ -9,6 +10,9 @@ import java.util.ArrayList;
  * Created by work on 2014-06-04.
  */
 public class DbRemove extends DatabaseTaskExecutor<ArrayList<Long>, DbRemove.OnDbRemoveTaskListenerMultiple> {
+
+    private static final String ATLEAST_ONE_ID_NEEDED = "No row id found. Please pass at least one row id in order to remove " +
+            "it from the table.";
 
     private long[] mIdsToRemove;
     private String mTableName;
@@ -22,6 +26,14 @@ public class DbRemove extends DatabaseTaskExecutor<ArrayList<Long>, DbRemove.OnD
 
     @Override
     protected ArrayList<Long> onExecuteTask(SQLiteDatabase db) {
+
+        if (TextUtils.isEmpty(mTableName)) {
+            throw new IllegalArgumentException(TABLE_NAME_CANT_BE_NULL);
+        }
+
+        if (mIdsToRemove.length == 0) {
+            throw new IllegalArgumentException(ATLEAST_ONE_ID_NEEDED);
+        }
 
         ArrayList<Long> idsRemoved = new ArrayList<Long>();
         for (int i = 0; i < mIdsToRemove.length; i++) {

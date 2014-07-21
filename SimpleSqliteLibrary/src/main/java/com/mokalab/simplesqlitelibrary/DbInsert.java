@@ -2,12 +2,16 @@ package com.mokalab.simplesqlitelibrary;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 
 /**
  * TODO: JAVADOC
  * Created by work on 2014-06-04.
  */
 public class DbInsert extends DatabaseTaskExecutor<Long, DbInsert.OnDbInsertTaskListener> {
+
+    private static final String CONTENTVALUES_CANT_BE_NULL = "ContentValues is null. Please pass a proper reference to a " +
+            "ContentValues.";
 
     private String mTableName;
     private ContentValues mValues;
@@ -21,6 +25,14 @@ public class DbInsert extends DatabaseTaskExecutor<Long, DbInsert.OnDbInsertTask
 
     @Override
     protected Long onExecuteTask(SQLiteDatabase db) {
+
+        if (mValues == null) {
+            throw new IllegalArgumentException(CONTENTVALUES_CANT_BE_NULL);
+        }
+
+        if (TextUtils.isEmpty(mTableName)) {
+            throw new IllegalArgumentException(TABLE_NAME_CANT_BE_NULL);
+        }
 
         long newRowId = db.insert(mTableName, null, mValues);
         return newRowId;

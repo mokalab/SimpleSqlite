@@ -2,6 +2,7 @@ package com.mokalab.simplesqlitelibrary;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 
 import java.util.ArrayList;
 
@@ -13,6 +14,9 @@ import java.util.ArrayList;
  * Created by work on 2014-06-04.
  */
 public class DbSelect<T extends IDbModel> extends DatabaseTaskExecutor<ArrayList<T>, DbSelect.OnDbSelectTaskListenerMultiple> {
+
+    private static final String SELECT_DELEGATE_MUST_NOT_BE_NULL = "OnDbSelectDelegate is null. Please pass a proper reference" +
+            " to OnDbSelectDelegate.";
 
     protected String mTableName;
     protected OnDbSelectDelegate<T> mSelectDelegate;
@@ -26,6 +30,14 @@ public class DbSelect<T extends IDbModel> extends DatabaseTaskExecutor<ArrayList
 
     @Override
     protected ArrayList<T> onExecuteTask(SQLiteDatabase db) {
+
+        if (mSelectDelegate == null) {
+            throw new IllegalArgumentException(SELECT_DELEGATE_MUST_NOT_BE_NULL);
+        }
+
+        if (TextUtils.isEmpty(mTableName)) {
+            throw new IllegalArgumentException(TABLE_NAME_CANT_BE_NULL);
+        }
 
         Cursor cursor =
                 db.query(mTableName,

@@ -2,8 +2,8 @@ package com.mokalab.simplesqlitetest;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,11 +14,17 @@ import android.widget.Toast;
 import com.mokalab.simplesqlitelibrary.DbInsert;
 import com.mokalab.simplesqlitelibrary.DbRemove;
 import com.mokalab.simplesqlitelibrary.DbSelect;
+import com.mokalab.simplesqlitelibrary.DbUpdate;
 
 import java.util.ArrayList;
 
 public class TestActivity extends ActionBarActivity implements AdapterView.OnItemClickListener, DbInsert.OnDbInsertTaskListener, DbSelect.OnDbSelectTaskListenerMultiple<SampleUserModel>,TestAdapter.OnBtnRemoveClickListener,
-        DbRemove.OnDbRemoveTaskListenerSingle {
+        DbRemove.OnDbRemoveTaskListenerSingle, AdapterView.OnItemLongClickListener, DbUpdate.OnDbUpdateTaskListener {
+
+    private static final int TASK_ID_ADD = 10;
+    private static final int TASK_ID_REMOVE = 11;
+    private static final int TASK_ID_SELECT_ALL = 12;
+    private static final int TASK_ID_UPDATE = 13;
 
     private ListView mListView;
     private TestAdapter mAdapter;
@@ -34,6 +40,7 @@ public class TestActivity extends ActionBarActivity implements AdapterView.OnIte
 
         mListView = (ListView) findViewById(R.id.listView);
         mListView.setOnItemClickListener(this);
+        mListView.setOnItemLongClickListener(this);
         mListView.setAdapter(mAdapter);
     }
 
@@ -41,7 +48,53 @@ public class TestActivity extends ActionBarActivity implements AdapterView.OnIte
     protected void onPostCreate(Bundle savedInstanceState) {
 
         super.onPostCreate(savedInstanceState);
-        SampleUsersTable.selectAll(10, this);
+        SampleUsersTable.selectAll(TASK_ID_SELECT_ALL, this);
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+        TestAdapter.AdapterItem item = (TestAdapter.AdapterItem) mAdapter.getItem(position);
+        if (item.type == TestAdapter.AdapterItem.TYPE_MODEL) {
+            showUpdateDialog((SampleUserModel) item.object);
+        } else {
+            showAdditionDialog();
+        }
+
+        return true;
+    }
+
+    private void showUpdateDialog(final SampleUserModel originalModel) {
+
+        View rootFieldView = LayoutInflater.from(this).inflate(R.layout.layout_new_user, null);
+        final EditText txtName = (EditText) rootFieldView.findViewById(R.id.txt_name);
+        final EditText txtAge = (EditText) rootFieldView.findViewById(R.id.txt_age);
+
+        txtName.setText(originalModel.getName());
+        txtAge.setText(String.valueOf(originalModel.getAge()));
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Update!");
+        builder.setMessage("Update this user's information!");
+        builder.setView(rootFieldView);
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String name = txtName.getText().toString();
+                String age = txtAge.getText().toString();
+                SampleUserModel model = new SampleUserModel(name, Integer.parseInt(age));
+                model.setDbAssociatedId(originalModel.getDbAssociatedId());
+                SampleUsersTable.update(TASK_ID_UPDATE, model, TestActivity.this);
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
     }
 
     @Override
@@ -75,7 +128,7 @@ public class TestActivity extends ActionBarActivity implements AdapterView.OnIte
                 String name = txtName.getText().toString();
                 String age = txtAge.getText().toString();
                 SampleUserModel model = new SampleUserModel(name, Integer.parseInt(age));
-                SampleUsersTable.insert(22, model, TestActivity.this);
+                SampleUsersTable.insert(TASK_ID_ADD, model, TestActivity.this);
                 dialogInterface.dismiss();
             }
         });
@@ -86,18 +139,20 @@ public class TestActivity extends ActionBarActivity implements AdapterView.OnIte
     public void onDbInsertCompleted(int taskId, Long insertedId) {
 
         Toast.makeText(this, "Added!", Toast.LENGTH_SHORT).show();
-        SampleUsersTable.selectAll(10, this);
+        SampleUsersTable.selectAll(TASK_ID_SELECT_ALL, this);
     }
 
     @Override
     public void onDbTaskFailed(int taskId) {
 
-        if (taskId == 22) {
+        if (taskId == TASK_ID_ADD) {
             Toast.makeText(this, "Add failed!", Toast.LENGTH_SHORT).show();
-        } else if (taskId == 10) {
+        } else if (taskId == TASK_ID_SELECT_ALL) {
             Toast.makeText(this, "Select All failed!", Toast.LENGTH_SHORT).show();
-        } else if (taskId == 11) {
+        } else if (taskId == TASK_ID_REMOVE) {
             Toast.makeText(this, "Remove failed!", Toast.LENGTH_SHORT).show();
+        } else if (taskId == TASK_ID_UPDATE) {
+            Toast.makeText(this, "Update failed!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -112,13 +167,20 @@ public class TestActivity extends ActionBarActivity implements AdapterView.OnIte
     @Override
     public void onRemoveClicked(int index, SampleUserModel model) {
 
-        SampleUsersTable.remove(11, model, this);
+        SampleUsersTable.remove(TASK_ID_REMOVE, model, this);
     }
 
     @Override
     public void onDbRemoveCompleted(int taskId, long idRemoved) {
 
         Toast.makeText(this, "Item removed!", Toast.LENGTH_SHORT).show();
-        SampleUsersTable.selectAll(10, this);
+        SampleUsersTable.selectAll(TASK_ID_SELECT_ALL, this);
+    }
+
+    @Override
+    public void onDbUpdateCompleted(int taskId, int numberOfRowsUpdated) {
+
+        Toast.makeText(this, numberOfRowsUpdated + " updated!", Toast.LENGTH_SHORT).show();
+        SampleUsersTable.selectAll(TASK_ID_SELECT_ALL, this);
     }
 }
