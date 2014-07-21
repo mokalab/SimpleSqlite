@@ -40,10 +40,10 @@ public class DbSelect<T extends IDbModel> extends DatabaseTaskExecutor<List<T>, 
      * <br><br>
      * Created by Pirdad S.
      *
-     * @param taskId
-     * @param tableName
-     * @param selectDelegate
-     * @param listener
+     * @param taskId the operation id
+     * @param tableName name of the table
+     * @param selectDelegate parameters callback listener
+     * @param listener success/failure callback listener
      */
     public DbSelect(int taskId, String tableName, OnDbSelectDelegate<T> selectDelegate, OnDbSelectTaskListenerMultiple<T> listener) {
 

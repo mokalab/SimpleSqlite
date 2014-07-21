@@ -5,7 +5,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
 /**
- * TODO: JAVADOC
+ * DbInsert provides sql insert operation. It wraps
+ * {@link android.database.sqlite.SQLiteDatabase#insert(String, String, android.content.ContentValues)} and makes it asynchronous. <br>
+ * <br>
+ *
+ * {@link com.mokalab.simplesqlitelibrary.DbInsert.OnDbInsertTaskListener} is used to callback with success or failure response
+ * so if you need the callback, you must implement it.
  *
  * <br><br>
  * Created by Pirdad S. on 2014-06-04.
@@ -19,15 +24,15 @@ public class DbInsert extends DatabaseTaskExecutor<Long, DbInsert.OnDbInsertTask
     private ContentValues mValues;
 
     /**
-     * TODO: JAVADOC
+     * Constructs a new insert operation.
      *
      * <br><br>
      * Created by Pirdad S.
      *
-     * @param taskId
-     * @param tableName
-     * @param values
-     * @param listener
+     * @param taskId the operation id
+     * @param tableName table name
+     * @param values parameter values
+     * @param listener callback listener
      */
     public DbInsert(int taskId, String tableName, ContentValues values, OnDbInsertTaskListener listener) {
 
@@ -69,13 +74,19 @@ public class DbInsert extends DatabaseTaskExecutor<Long, DbInsert.OnDbInsertTask
     }
 
     /**
-     * TODO: JAVADOC
+     * Implement this interface to get a call back with the inserted id.
      *
      * <br><br>
      * Created by Pirdad S.
      */
     public static interface OnDbInsertTaskListener extends DatabaseTaskExecutor.OnDbTaskExecutedListener {
 
+        /**
+         * Called when the insert operation is completed and successful.
+         *
+         * @param taskId the operation id
+         * @param insertedId the inserted id of the new row
+         */
         public abstract void onDbInsertCompleted(int taskId, Long insertedId);
     }
 }
