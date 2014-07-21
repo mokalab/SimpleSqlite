@@ -4,10 +4,18 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 
 /**
- * TODO: JAVADOC
+ * Extend this class to define logic for executing a {@link android.database.sqlite.SQLiteDatabase} related operation.
+ * This class makes your operation asynchronous. You must implement {@link #onExecuteTask(android.database.sqlite.SQLiteDatabase)}
+ * and {@link #onPostExecute(Object)}.
+ * <br>
+ * For example: your simple CRUD operations can extend from this class.
  *
  * <br><br>
  * Created by Pirdad S. on 2014-05-26.
+ *
+ * @param <T> the return type for {@link #onExecuteTask(android.database.sqlite.SQLiteDatabase)}. Your subclass must define this.
+ * @param <P> the type for the callback listener. Must extend from {@link com.mokalab.simplesqlitelibrary.DatabaseTaskExecutor
+ * .OnDbTaskExecutedListener}. Your subclass must define this.
  */
 public abstract class DatabaseTaskExecutor<T, P extends DatabaseTaskExecutor.OnDbTaskExecutedListener> extends AsyncTask<Void, Void, T> {
 
@@ -19,14 +27,14 @@ public abstract class DatabaseTaskExecutor<T, P extends DatabaseTaskExecutor.OnD
     private int mTaskId;
 
     /**
-     * TODO: JAVADOC
+     * Constructor for setting up for your operation.
      *
      * <br><br>
      * Created by Pirdad S.
      *
-     * @param db
-     * @param taskId
-     * @param listener
+     * @param db your database object
+     * @param taskId an id for this task
+     * @param listener callback listener
      */
     public DatabaseTaskExecutor(SQLiteDatabase db, int taskId, P listener) {
 
@@ -105,7 +113,7 @@ public abstract class DatabaseTaskExecutor<T, P extends DatabaseTaskExecutor.OnD
     }
 
     /**
-     * TODO: JAVADOC
+     * Returns the operation task id (Integer).
      *
      * <br><br>
      * Created by Pirdad S.
@@ -115,7 +123,7 @@ public abstract class DatabaseTaskExecutor<T, P extends DatabaseTaskExecutor.OnD
     }
 
     /**
-     * TODO: JAVADOC
+     * Returns the callback Listener.
      *
      * <br><br>
      * Created by Pirdad S.
@@ -125,7 +133,9 @@ public abstract class DatabaseTaskExecutor<T, P extends DatabaseTaskExecutor.OnD
     }
 
     /**
-     * TODO: JAVADOC
+     * This interface is the base definition of the callback Listener. It only defines {@link #onDbTaskFailed(int)} which
+     * should only be called whenever a task has failed. You should extend this interface and define your own onSuccess methods
+     * depending on it's context.
      *
      * <br><br>
      * Created by Pirdad S.
