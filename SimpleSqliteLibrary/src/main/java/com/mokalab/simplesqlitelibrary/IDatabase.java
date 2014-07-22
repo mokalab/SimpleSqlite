@@ -1,5 +1,7 @@
 package com.mokalab.simplesqlitelibrary;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Implement this interface with your Database Model.
  * It will be used by {@link DatabaseHelper} to
@@ -15,6 +17,7 @@ public interface IDatabase {
      * <br><br>
      * Created by Pirdad S.
      */
+    @NotNull
     public String getDatabaseName();
 
     /**
@@ -29,5 +32,6 @@ public interface IDatabase {
      * <br><br>
      * Created by Pirdad S.
      */
+    @NotNull
     public ITable[] getDatabaseTables();
 }

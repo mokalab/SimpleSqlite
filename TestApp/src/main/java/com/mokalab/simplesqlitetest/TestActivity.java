@@ -16,7 +16,7 @@ import com.mokalab.simplesqlitelibrary.DbRemove;
 import com.mokalab.simplesqlitelibrary.DbSelect;
 import com.mokalab.simplesqlitelibrary.DbUpdate;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class TestActivity extends ActionBarActivity implements AdapterView.OnItemClickListener, DbInsert.OnDbInsertTaskListener, DbSelect.OnDbSelectTaskListenerMultiple<SampleUserModel>,TestAdapter.OnBtnRemoveClickListener,
         DbRemove.OnDbRemoveTaskListenerSingle, AdapterView.OnItemLongClickListener, DbUpdate.OnDbUpdateTaskListener {
@@ -136,7 +136,7 @@ public class TestActivity extends ActionBarActivity implements AdapterView.OnIte
     }
 
     @Override
-    public void onDbInsertCompleted(int taskId, Long insertedId) {
+    public void onDbInsertCompleted(int taskId, long insertedId) {
 
         Toast.makeText(this, "Added!", Toast.LENGTH_SHORT).show();
         SampleUsersTable.selectAll(TASK_ID_SELECT_ALL, this);
@@ -157,7 +157,7 @@ public class TestActivity extends ActionBarActivity implements AdapterView.OnIte
     }
 
     @Override
-    public void onDbSelectCompleted(int taskId, ArrayList<SampleUserModel> result) {
+    public void onDbSelectCompleted(int taskId, List<SampleUserModel> result) {
 
         Toast.makeText(this, "Data fetched!", Toast.LENGTH_SHORT).show();
         mAdapter.setData(result);
@@ -166,7 +166,6 @@ public class TestActivity extends ActionBarActivity implements AdapterView.OnIte
 
     @Override
     public void onRemoveClicked(int index, SampleUserModel model) {
-
         SampleUsersTable.remove(TASK_ID_REMOVE, model, this);
     }
 

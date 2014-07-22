@@ -3,6 +3,9 @@ package com.mokalab.simplesqlitelibrary;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +42,7 @@ public class DbRemove extends DatabaseTaskExecutor<List<Long>, DbRemove.OnDbRemo
      * @param idsToRemove ids of the rows to remove (must refer to '_id' column)
      * @param listener callback listener
      */
-    public DbRemove(int taskId, String tableName, long[] idsToRemove, OnDbRemoveTaskListenerMultiple listener) {
+    public DbRemove(int taskId, @NotNull String tableName, @NotNull long[] idsToRemove, @NotNull OnDbRemoveTaskListenerMultiple listener) {
 
         super(openDb(), taskId, listener);
         mIdsToRemove = idsToRemove;
@@ -47,7 +50,9 @@ public class DbRemove extends DatabaseTaskExecutor<List<Long>, DbRemove.OnDbRemo
     }
 
     @Override
-    protected List<Long> onExecuteTask(SQLiteDatabase db) {
+    protected List<Long> onExecuteTask(@Nullable SQLiteDatabase db) {
+
+        if (db == null) return null;
 
         if (TextUtils.isEmpty(mTableName)) {
             throw new IllegalArgumentException(TABLE_NAME_CANT_BE_NULL);
@@ -72,7 +77,7 @@ public class DbRemove extends DatabaseTaskExecutor<List<Long>, DbRemove.OnDbRemo
     }
 
     @Override
-    protected void onTaskExecuted(List<Long> result) {
+    protected void onTaskExecuted(@Nullable List<Long> result) {
 
         closeDb();
         if (result == null || result.size() <= 0) {

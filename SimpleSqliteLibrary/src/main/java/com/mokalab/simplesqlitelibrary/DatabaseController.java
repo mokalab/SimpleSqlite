@@ -3,6 +3,9 @@ package com.mokalab.simplesqlitelibrary;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -32,7 +35,7 @@ public class DatabaseController {
      * <br><br>
      * Created by Pirdad S.
      */
-    public static synchronized void initialize(SQLiteOpenHelper dbHelper) {
+    public static synchronized void initialize(@NotNull SQLiteOpenHelper dbHelper) {
 
         if (mController == null) {
             mController = new DatabaseController(dbHelper);
@@ -67,7 +70,7 @@ public class DatabaseController {
      * @param dbHelper required SQLiteOpenHelper
      * @throws NullPointerException
      */
-    private DatabaseController(SQLiteOpenHelper dbHelper) {
+    private DatabaseController(@NotNull SQLiteOpenHelper dbHelper) {
 
         if (dbHelper == null) {
             throw new NullPointerException(NULLPOINTER_EXCEPTION_MESSAGE);
@@ -93,6 +96,7 @@ public class DatabaseController {
      * <br><br>
      * Created by Pirdad S. on 2014-05-26.
      */
+    @Nullable
     public synchronized SQLiteDatabase openDatabase() {
 
         if (mDbOpenedCounter.incrementAndGet() == 1) {

@@ -2,6 +2,8 @@ package com.mokalab.simplesqlitelibrary;
 
 import android.text.TextUtils;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * This is a Helper class for Database Tables only. It contains helper functions
  * for only relating to tables. <b>DO NOT ADD UNRELATED FUNCTIONS HERE.</b>
@@ -22,7 +24,7 @@ public class TablesHelper {
      * Created by Pirdad S.
      * @return DROP statement or if (tables == null) => returns null
      */
-    public static String onDropTables(ITable[] tables) {
+    public static String onDropTables(@NotNull ITable[] tables) {
 
         if (tables == null) return null;
 
@@ -43,7 +45,7 @@ public class TablesHelper {
      * Created by Pirdad S.
      * @return CREATE statement
      */
-    public static String onCreateTables(ITable[] tables) {
+    public static String onCreateTables(@NotNull ITable[] tables) {
 
         int count = tables.length;
         String statement = "";

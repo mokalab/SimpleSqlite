@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by work on 2014-06-25.
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 public class TestAdapter extends BaseAdapter {
 
     private LayoutInflater mLayoutInflater;
-    private ArrayList<AdapterItem> mData;
+    private List<AdapterItem> mData;
     private OnBtnRemoveClickListener mBtnRemoveClickListener;
 
     public TestAdapter(Context context) {
@@ -70,7 +71,7 @@ public class TestAdapter extends BaseAdapter {
         return 0;
     }
 
-    public void setData(ArrayList<SampleUserModel> data) {
+    public void setData(List<SampleUserModel> data) {
 
         mData.clear();
         for (int i = 0; i < data.size(); i++) {

@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.mokalab.simplesqlitelibrary.util.MrLogger;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * This class is responsible for Creating or Upgrading your tables.
  *
@@ -28,7 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param context required Context
      * @param db required Database Model
      */
-    public DatabaseHelper(Context context, IDatabase db) {
+    public DatabaseHelper(@NotNull Context context, @NotNull IDatabase db) {
         this(context, db, false);
     }
 
@@ -42,7 +44,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param db required Database Model
      * @param logsEnabled whether to enable or disable logs
      */
-    public DatabaseHelper(Context context, IDatabase db, boolean logsEnabled) {
+    public DatabaseHelper(@NotNull Context context, @NotNull IDatabase db, boolean logsEnabled) {
         this(context, db, logsEnabled, DEFAULT_TAG);
     }
 
@@ -57,7 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param logsEnabled whether to enable or disable logs
      * @param debugTag tag for the logs
      */
-    public DatabaseHelper(Context context, IDatabase db, boolean logsEnabled, String debugTag) {
+    public DatabaseHelper(@NotNull Context context, @NotNull IDatabase db, boolean logsEnabled, @NotNull String debugTag) {
 
         super(context, db.getDatabaseName(), null, db.getDatabaseVersion());
         mTables = db.getDatabaseTables();

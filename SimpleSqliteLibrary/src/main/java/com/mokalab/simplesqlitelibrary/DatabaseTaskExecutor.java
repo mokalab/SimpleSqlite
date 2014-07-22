@@ -3,6 +3,8 @@ package com.mokalab.simplesqlitelibrary;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 
+import org.jetbrains.annotations.Nullable;
+
 /**
  * Extend this class to define logic for executing a {@link android.database.sqlite.SQLiteDatabase} related operation.
  * This class makes your operation asynchronous. You must implement {@link #onExecuteTask(android.database.sqlite.SQLiteDatabase)}
@@ -36,7 +38,7 @@ public abstract class DatabaseTaskExecutor<T, P extends DatabaseTaskExecutor.OnD
      * @param taskId an id for this task
      * @param listener callback listener
      */
-    public DatabaseTaskExecutor(SQLiteDatabase db, int taskId, P listener) {
+    public DatabaseTaskExecutor(SQLiteDatabase db, int taskId, @Nullable P listener) {
 
         mListener = listener;
         mDb = db;
@@ -62,7 +64,7 @@ public abstract class DatabaseTaskExecutor<T, P extends DatabaseTaskExecutor.OnD
      * <br><br>
      * Created by Pirdad S.
      */
-    protected abstract T onExecuteTask(SQLiteDatabase db);
+    protected abstract T onExecuteTask(@Nullable SQLiteDatabase db);
 
     /**
      * Called from {@link #onPostExecute(Object)} after the task has been completed in a
@@ -71,7 +73,7 @@ public abstract class DatabaseTaskExecutor<T, P extends DatabaseTaskExecutor.OnD
      * <br><br>
      * Created by Pirdad S.
      */
-    protected abstract void onTaskExecuted(T result);
+    protected abstract void onTaskExecuted(@Nullable T result);
 
     /**
      * Opens the Database. If {@link com.mokalab.simplesqlitelibrary.DatabaseController} was never initialized then it will
@@ -80,6 +82,7 @@ public abstract class DatabaseTaskExecutor<T, P extends DatabaseTaskExecutor.OnD
      * <br><br>
      * Created by Pirdad S.
      */
+    @Nullable
     protected synchronized static SQLiteDatabase openDb() {
 
         DatabaseController dbCtrl = null;
@@ -128,6 +131,7 @@ public abstract class DatabaseTaskExecutor<T, P extends DatabaseTaskExecutor.OnD
      * <br><br>
      * Created by Pirdad S.
      */
+    @Nullable
     public P getListener() {
         return mListener;
     }

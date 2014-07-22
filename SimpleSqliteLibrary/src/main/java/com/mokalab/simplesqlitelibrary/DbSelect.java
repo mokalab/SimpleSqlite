@@ -4,6 +4,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
 
 /**
@@ -45,7 +48,8 @@ public class DbSelect<T extends IDbModel> extends DatabaseTaskExecutor<List<T>, 
      * @param selectDelegate parameters callback listener
      * @param listener success/failure callback listener
      */
-    public DbSelect(int taskId, String tableName, OnDbSelectDelegate<T> selectDelegate, OnDbSelectTaskListenerMultiple<T> listener) {
+    public DbSelect(int taskId, @NotNull String tableName, @NotNull OnDbSelectDelegate<T> selectDelegate,
+                    @Nullable OnDbSelectTaskListenerMultiple<T> listener) {
 
         super(openDb(), taskId, listener);
         mSelectDelegate = selectDelegate;
@@ -53,7 +57,9 @@ public class DbSelect<T extends IDbModel> extends DatabaseTaskExecutor<List<T>, 
     }
 
     @Override
-    protected List<T> onExecuteTask(SQLiteDatabase db) {
+    protected List<T> onExecuteTask(@Nullable SQLiteDatabase db) {
+
+        if (db == null) return null;
 
         if (mSelectDelegate == null) {
             throw new IllegalArgumentException(SELECT_DELEGATE_MUST_NOT_BE_NULL);
@@ -65,12 +71,12 @@ public class DbSelect<T extends IDbModel> extends DatabaseTaskExecutor<List<T>, 
 
         Cursor cursor =
                 db.query(mTableName,
-                mSelectDelegate.onGetColumnNames(),
-                mSelectDelegate.onGetWhereClause(),
-                mSelectDelegate.onGetSelectionArgs(),
-                mSelectDelegate.onGetGroupByStatement(),
-                mSelectDelegate.onGetHavingStatement(),
-                mSelectDelegate.onGetOrderByStatement());
+                        mSelectDelegate.onGetColumnNames(),
+                        mSelectDelegate.onGetWhereClause(),
+                        mSelectDelegate.onGetSelectionArgs(),
+                        mSelectDelegate.onGetGroupByStatement(),
+                        mSelectDelegate.onGetHavingStatement(),
+                        mSelectDelegate.onGetOrderByStatement());
 
         if (cursor == null) {
             return null;
@@ -80,7 +86,7 @@ public class DbSelect<T extends IDbModel> extends DatabaseTaskExecutor<List<T>, 
     }
 
     @Override
-    protected void onTaskExecuted(List<T> result) {
+    protected void onTaskExecuted(@Nullable List<T> result) {
 
         closeDb();
         if (result == null) {
@@ -88,10 +94,9 @@ public class DbSelect<T extends IDbModel> extends DatabaseTaskExecutor<List<T>, 
             if (getListener() != null) {
                 getListener().onDbTaskFailed(getTaskId());
             }
-            return;
-        }
 
-        if (getListener() != null) {
+        } else if (getListener() != null) {
+
             /*
             IGNORE LINT ERROR HERE AS THE IMPLICIT CAST WILL
             BE SAFE DUE TO TYPE SAFETY ON THE CONSTRUCTOR...
@@ -153,12 +158,25 @@ public class DbSelect<T extends IDbModel> extends DatabaseTaskExecutor<List<T>, 
      */
     public static interface OnDbSelectDelegate<K extends IDbModel> {
 
+        @Nullable
         public abstract String[] onGetColumnNames();
+
+        @Nullable
         public abstract String onGetWhereClause();
+
+        @Nullable
         public abstract String[] onGetSelectionArgs();
+
+        @Nullable
         public abstract String onGetGroupByStatement();
+
+        @Nullable
         public abstract String onGetHavingStatement();
+
+        @Nullable
         public abstract String onGetOrderByStatement();
-        public abstract List<K> onSelectParse(Cursor cursor);
+
+        @Nullable
+        public abstract List<K> onSelectParse(@Nullable Cursor cursor);
     }
 }

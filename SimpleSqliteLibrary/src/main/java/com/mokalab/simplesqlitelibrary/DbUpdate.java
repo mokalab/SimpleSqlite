@@ -4,6 +4,9 @@ import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 /**
  * DbUpdate provides sql update operation. It wraps
  * {@link android.database.sqlite.SQLiteDatabase#update(String, android.content.ContentValues, String, String[])}
@@ -39,7 +42,8 @@ public class DbUpdate extends DatabaseTaskExecutor<Integer, DbUpdate.OnDbUpdateT
      * @param updateDelegate callback for where clause/arg
      * @param listener callback listener for success/failure
      */
-    public DbUpdate(int taskId, String tableName, ContentValues values, OnDbUpdateDelegate updateDelegate, OnDbUpdateTaskListener
+    public DbUpdate(int taskId, @NotNull String tableName, @NotNull ContentValues values,
+                    @NotNull OnDbUpdateDelegate updateDelegate, @Nullable OnDbUpdateTaskListener
             listener) {
 
         super(openDb(), taskId, listener);
@@ -49,7 +53,9 @@ public class DbUpdate extends DatabaseTaskExecutor<Integer, DbUpdate.OnDbUpdateT
     }
 
     @Override
-    protected Integer onExecuteTask(SQLiteDatabase db) {
+    protected Integer onExecuteTask(@Nullable SQLiteDatabase db) {
+
+        if (db == null) return null;
 
         if (mUpdateDelegate == null) {
             throw new IllegalArgumentException(UPDATE_DELEGATE_MUST_NOT_BE_NULL);
@@ -68,7 +74,7 @@ public class DbUpdate extends DatabaseTaskExecutor<Integer, DbUpdate.OnDbUpdateT
     }
 
     @Override
-    protected void onTaskExecuted(Integer result) {
+    protected void onTaskExecuted(@Nullable Integer result) {
 
         closeDb();
         if (result == null || result <= 0) {
@@ -112,11 +118,13 @@ public class DbUpdate extends DatabaseTaskExecutor<Integer, DbUpdate.OnDbUpdateT
         /**
          * Return operation specific where clause. Ex. _id = ? & name = ?
          */
+        @Nullable
         public abstract String onGetWhereClause();
 
         /**
          * Return the where clause's arguments. Ex. new String[] { "10", "name" }
          */
+        @Nullable
         public abstract String[] onGetWhereArgs();
     }
 }

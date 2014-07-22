@@ -1,5 +1,7 @@
 package com.mokalab.simplesqlitelibrary;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Use this interface to create your Tables. It gets used by
  * {@link TablesHelper} to generate drop/create
@@ -23,6 +25,7 @@ public interface ITable {
      * <br><br>
      * Created by Pirdad S.
      */
+    @NotNull
     public String getTableName();
 
     /**
@@ -33,6 +36,7 @@ public interface ITable {
      * <br><br>
      * Created by Pirdad S.
      */
+    @NotNull
     public String[] getColumnNames();
 
     /**
@@ -43,6 +47,7 @@ public interface ITable {
      * <br><br>
      * Created by Pirdad S.
      */
+    @NotNull
     public String[] getColumnTypes();
 
     /**
@@ -53,5 +58,6 @@ public interface ITable {
      * <br><br>
      * Created by Pirdad S.
      */
+    @NotNull
     public String[] getColumnOptions();
 }

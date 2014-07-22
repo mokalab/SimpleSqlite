@@ -9,29 +9,35 @@ import com.mokalab.simplesqlitelibrary.DbSelect;
 import com.mokalab.simplesqlitelibrary.DbUpdate;
 import com.mokalab.simplesqlitelibrary.ITable;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by work on 2014-06-12.
+ * Created by Pirdad S. on 2014-06-12.
  */
 public class SampleUsersTable implements ITable {
 
+    @NotNull
     @Override
     public String getTableName() {
         return "UsersTbl";
     }
 
+    @NotNull
     @Override
     public String[] getColumnNames() {
         return new String[] { "_id", "name", "age" };
     }
 
+    @NotNull
     @Override
     public String[] getColumnTypes() {
         return new String[] { "integer", "text", "integer" };
     }
 
+    @NotNull
     @Override
     public String[] getColumnOptions() {
         return new String[] { "primary key autoincrement", "not null", "not null" };

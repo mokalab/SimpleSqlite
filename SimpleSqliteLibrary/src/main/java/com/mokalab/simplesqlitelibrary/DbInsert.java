@@ -4,6 +4,9 @@ import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 /**
  * DbInsert provides sql insert operation. It wraps
  * {@link android.database.sqlite.SQLiteDatabase#insert(String, String, android.content.ContentValues)} and makes it asynchronous. <br>
@@ -34,7 +37,8 @@ public class DbInsert extends DatabaseTaskExecutor<Long, DbInsert.OnDbInsertTask
      * @param values parameter values
      * @param listener callback listener
      */
-    public DbInsert(int taskId, String tableName, ContentValues values, OnDbInsertTaskListener listener) {
+    public DbInsert(int taskId, @NotNull String tableName, @NotNull ContentValues values,
+                    @Nullable OnDbInsertTaskListener listener) {
 
         super(openDb(), taskId, listener);
         mTableName = tableName;
@@ -42,7 +46,9 @@ public class DbInsert extends DatabaseTaskExecutor<Long, DbInsert.OnDbInsertTask
     }
 
     @Override
-    protected Long onExecuteTask(SQLiteDatabase db) {
+    protected Long onExecuteTask(@Nullable SQLiteDatabase db) {
+
+        if (db == null) return (long) -1;
 
         if (mValues == null) {
             throw new IllegalArgumentException(CONTENTVALUES_CANT_BE_NULL);
@@ -57,7 +63,7 @@ public class DbInsert extends DatabaseTaskExecutor<Long, DbInsert.OnDbInsertTask
     }
 
     @Override
-    protected void onTaskExecuted(Long result) {
+    protected void onTaskExecuted(@Nullable Long result) {
 
         closeDb();
         if (result == null || result <= 0) {
@@ -87,6 +93,6 @@ public class DbInsert extends DatabaseTaskExecutor<Long, DbInsert.OnDbInsertTask
          * @param taskId the operation id
          * @param insertedId the inserted id of the new row
          */
-        public abstract void onDbInsertCompleted(int taskId, Long insertedId);
+        public abstract void onDbInsertCompleted(int taskId, long insertedId);
     }
 }
