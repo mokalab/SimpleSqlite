@@ -20,42 +20,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private ITable[] mTables;
 
     /**
-     * TODO: JAVADOC
+     * Constructs a new DatabaseHelper.
      *
      * <br><br>
      * Created by Pirdad S.
      *
-     * @param context
-     * @param db
+     * @param context required Context
+     * @param db required Database Model
      */
     public DatabaseHelper(Context context, IDatabase db) {
         this(context, db, false);
     }
 
     /**
-     * TODO: JAVADOC
+     * Constructs a new DatabaseHelper.
      *
      * <br><br>
      * Created by Pirdad S.
      *
-     * @param context
-     * @param db
-     * @param logsEnabled
+     * @param context required Context
+     * @param db required Database Model
+     * @param logsEnabled whether to enable or disable logs
      */
     public DatabaseHelper(Context context, IDatabase db, boolean logsEnabled) {
         this(context, db, logsEnabled, DEFAULT_TAG);
     }
 
     /**
-     * TODO: JAVADOC
+     * Constructs a new DatabaseHelper.
      *
      * <br><br>
      * Created by Pirdad S.
      *
-     * @param context
-     * @param db
-     * @param logsEnabled
-     * @param debugTag
+     * @param context required Context
+     * @param db required Database Model
+     * @param logsEnabled whether to enable or disable logs
+     * @param debugTag tag for the logs
      */
     public DatabaseHelper(Context context, IDatabase db, boolean logsEnabled, String debugTag) {
 

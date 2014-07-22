@@ -5,7 +5,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
 /**
- * TODO: JAVADOC
+ * DbUpdate provides sql update operation. It wraps
+ * {@link android.database.sqlite.SQLiteDatabase#update(String, android.content.ContentValues, String, String[])}
+ * and makes it asynchronous.
+ * <br><br>
+ * Use {@link OnDbUpdateDelegate} to provide operation specific where clause and where arguments to your Update Operation. And
+ * implement {@link OnDbUpdateTaskListener} to get notified of operation success or failure.
+ *
  * <br><br>
  * Created by Pirdad S. on 2014-06-04.
  */
@@ -22,16 +28,16 @@ public class DbUpdate extends DatabaseTaskExecutor<Integer, DbUpdate.OnDbUpdateT
     private OnDbUpdateDelegate mUpdateDelegate;
 
     /**
-     * TODO: JAVADOC
+     * Constructs a new update operation.
      *
      * <br><br>
      * Created by Pirdad S.
      *
-     * @param taskId
-     * @param tableName
-     * @param values
-     * @param updateDelegate
-     * @param listener
+     * @param taskId the operation id
+     * @param tableName the name of the table
+     * @param values the values that need to be updated
+     * @param updateDelegate callback for where clause/arg
+     * @param listener callback listener for success/failure
      */
     public DbUpdate(int taskId, String tableName, ContentValues values, OnDbUpdateDelegate updateDelegate, OnDbUpdateTaskListener
             listener) {
@@ -79,25 +85,38 @@ public class DbUpdate extends DatabaseTaskExecutor<Integer, DbUpdate.OnDbUpdateT
     }
 
     /**
-     * TODO: JAVADOC
+     * Implement this interface to get notified of the update success or failure.
      *
      * <br><br>
      * Created by Pirdad S.
      */
     public static interface OnDbUpdateTaskListener extends DatabaseTaskExecutor.OnDbTaskExecutedListener {
 
+        /**
+         * This method will get called from {@link com.mokalab.simplesqlitelibrary.DbUpdate} to notify the caller of a
+         * successful update operation.
+         * @param taskId the operation id
+         * @param numberOfRowsUpdated the number of rows that was updated
+         */
         public abstract void onDbUpdateCompleted(int taskId, int numberOfRowsUpdated);
     }
 
     /**
-     * TODO: JAVADOC
+     * Implement this interface to provide the where clause and the where arguments.
      *
      * <br><br>
      * Created by Pirdad S.
      */
     public static interface OnDbUpdateDelegate {
 
+        /**
+         * Return operation specific where clause. Ex. _id = ? & name = ?
+         */
         public abstract String onGetWhereClause();
+
+        /**
+         * Return the where clause's arguments. Ex. new String[] { "10", "name" }
+         */
         public abstract String[] onGetWhereArgs();
     }
 }

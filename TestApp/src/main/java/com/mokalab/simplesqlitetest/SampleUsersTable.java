@@ -10,6 +10,7 @@ import com.mokalab.simplesqlitelibrary.DbUpdate;
 import com.mokalab.simplesqlitelibrary.ITable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by work on 2014-06-12.
@@ -117,7 +118,7 @@ public class SampleUsersTable implements ITable {
         DbRemove remove = new DbRemove(taskId, table.getTableName(), idsToRemove, new DbRemove.OnDbRemoveTaskListenerMultiple() {
 
             @Override
-            public void onDbRemoveCompleted(int taskId, ArrayList<Long> idsRemoved) {
+            public void onDbRemoveCompleted(int taskId, List<Long> idsRemoved) {
 
                 if (dbRemoveListener == null) return;
                 if (idsRemoved != null && idsRemoved.size() > 0) {
