@@ -144,7 +144,7 @@ public abstract class DatabaseTaskExecutor<T, P extends DatabaseTaskExecutor.OnD
      * <br><br>
      * Created by Pirdad S.
      */
-    protected static interface OnDbTaskExecutedListener {
+    public static interface OnDbTaskExecutedListener {
 
         public abstract void onDbTaskFailed(int taskId);
     }
